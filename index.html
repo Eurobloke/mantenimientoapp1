@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mantapp</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Mantenimiento App</title>
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.png">
+
     <style>
-        /* Esto quita los márgenes blancos del navegador */
+        /* 1. Estilos básicos de la página */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* Evita scroll en la página principal */
+            overflow: hidden; /* Evita scroll doble */
+            font-family: sans-serif;
+            background-color: #f0f0f0;
         }
-        
-        /* Esto hace que el iframe ocupe toda la pantalla */
+
+        /* 2. Estilos del IFRAME (Tu app de Google) */
         iframe {
             position: absolute;
             top: 0;
@@ -23,15 +27,95 @@
             width: 100%;
             height: 100%;
             border: none;
+            /* Opcional: Lo hacemos invisible al inicio para que no se vea cargar */
+            opacity: 0; 
+            transition: opacity 0.5s ease-in;
+        }
+        
+        /* Clase para hacer visible el iframe suavemente */
+        iframe.cargado {
+            opacity: 1;
+        }
+
+        /* 3. PANTALLA DE CARGA (El fondo blanco que tapa todo) */
+        #pantalla-carga {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Se asegura de estar encima de todo */
+            transition: opacity 0.5s ease-out; /* Desvanecimiento suave */
+        }
+
+        /* 4. EL SPINNER (El círculo giratorio) */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3; /* Gris claro */
+            border-top: 5px solid #3498db; /* Azul (puedes cambiar el color) */
+            border-radius: 50%;
+            animation: girar 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .texto-carga {
+            color: #555;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* La animación de girar */
+        @keyframes girar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Clase para ocultar la pantalla de carga */
+        .ocultar {
+            opacity: 0;
+            pointer-events: none; /* Permite hacer clic a través de ella una vez oculta */
         }
     </style>
 </head>
 <body>
 
+    <div id="pantalla-carga">
+        <div class="spinner"></div>
+        <div class="texto-carga">Cargando App...</div>
+    </div>
+
     <iframe 
+        id="mi-iframe"
         src="https://script.google.com/macros/s/AKfycbxu-o5csTnD27cRXtG6BFQY6dEg2OzNXb0NE5EYEdX79_HqxI9jhbYl_ui1e_QjlDFOkQ/exec"
-        title="Aplicación Google">
+        title="Aplicación Google"
+        onload="appCargada()">
     </iframe>
+
+    <script>
+        // Esta función se ejecuta cuando Google termina de cargar
+        function appCargada() {
+            // 1. Buscamos los elementos
+            var loader = document.getElementById('pantalla-carga');
+            var iframe = document.getElementById('mi-iframe');
+
+            // 2. Ocultamos el loader
+            loader.classList.add('ocultar');
+
+            // 3. Mostramos el iframe suavemente
+            iframe.classList.add('cargado');
+            
+            // 4. (Opcional) Eliminamos el loader del HTML después de 1 segundo para limpiar memoria
+            setTimeout(function() {
+                loader.style.display = 'none';
+            }, 1000);
+        }
+    </script>
 
 </body>
 </html>
