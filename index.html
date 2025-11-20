@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Aplicación Web</title>
+    <style>
+        /* Esto quita los márgenes blancos del navegador */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Evita scroll en la página principal */
+        }
+        
+        /* Esto hace que el iframe ocupe toda la pantalla */
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe 
+        src="https://script.google.com/macros/s/AKfycbxu-o5csTnD27cRXtG6BFQY6dEg2OzNXb0NE5EYEdX79_HqxI9jhbYl_ui1e_QjlDFOkQ/exec"
+        title="Aplicación Google">
+    </iframe>
+
+</body>
+</html>
